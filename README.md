@@ -1,3 +1,3 @@
-# Wordle App Clone
+# Uber App Clone
 
 ![Screenshot](ScreenShot.PNG)
