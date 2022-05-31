@@ -7,9 +7,11 @@ import NavOptions from '../components/NavOptions';
 import { useDispatch } from 'react-redux';
 import { setDestination, setOrigin } from '../slices/navSlices';
 
+
 const HomeScreen = () => {
     
     const dispatch = useDispatch();
+    
     
     return (
       <View style={tw`bg-white h-full`}>
