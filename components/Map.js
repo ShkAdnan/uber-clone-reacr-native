@@ -2,17 +2,18 @@ import React, { Component, useEffect, useRef } from 'react';
 import { Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GOOGLE_MAP_API_KEY } from "@env";
 
 import tw from 'twrnc';
-import { selectDestination, selectOrigin } from '../slices/navSlices';
+import { selectDestination, selectOrigin, setTravelTimeInformation } from '../slices/navSlices';
 
 const Map = () =>{
     
     const origin = useSelector(selectOrigin);
     const destination = useSelector(selectDestination);
     const mapRef = useRef(null);
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         if( !origin || !destination ) return;
@@ -22,7 +23,21 @@ const Map = () =>{
             edgePadding : { top : 50, right : 50, bottom : 50, left : 50}
         })
 
-    },[origin, destination])
+    },[origin, destination]);
+
+    useEffect(()=>{
+        if( !origin || !destination ) return;
+        const getTravelTime = async () => {
+            fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.desription}&destinations=${destination.desription}&key=${GOOGLE_MAP_API_KEY}`)
+            .then( res => res.json())
+            .then( data => {
+                dispatch( setTravelTimeInformation(data.rows[0].elements[0]) )
+            })
+        }
+
+        getTravelTime();
+
+    },[origin, destination, GOOGLE_MAP_API_KEY])
 
     return (
             <MapView
@@ -54,7 +69,7 @@ const Map = () =>{
                         }}
                         title="Origin"
                         description={origin.desription}
-                        identifer="origin"
+                        identifer='origin'
                     />
                 )}
 
@@ -66,7 +81,7 @@ const Map = () =>{
                         }}
                         title="Destination"
                         description={origin.desription}
-                        identifer="destination"
+                        identifer='destination'
                     />
                 )}
           </MapView>

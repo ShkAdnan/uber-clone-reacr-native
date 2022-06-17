@@ -6,6 +6,7 @@ import tw from 'twrnc';
 import NavOptions from '../components/NavOptions';
 import { useDispatch } from 'react-redux';
 import { setDestination, setOrigin } from '../slices/navSlices';
+import NavFav from '../components/NavFav';
 
 
 const HomeScreen = () => {
@@ -56,6 +57,7 @@ const HomeScreen = () => {
                 }}
               />
             <NavOptions />
+            <NavFav />
           </View>
       </View>
     )
